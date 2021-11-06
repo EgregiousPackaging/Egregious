@@ -1,12 +1,15 @@
 {
   "dependencies": {
+    "@ericblade/quagga2": "^1.4.2",
     "express": "^4.17.1"
   },
   "scripts": {
     "lint": "eslint .",
     "format-check": "prettier --check .",
     "format": "prettier -w .",
-    "build": "tsc",
+    "build-server": "tsc --build ./src/server/tsconfig.json",
+    "build-client": "webpack --config webpack.config.ts",
+    "build": "npm run build-server && npm run build-client",
     "start": "node ./dist/server/start.js"
   },
   "devDependencies": {
@@ -15,7 +18,11 @@
     "eslint": "^8.1.0",
     "eslint-config-prettier": "^8.3.0",
     "prettier": "^2.4.1",
+    "ts-loader": "^9.2.6",
+    "ts-node": "^10.4.0",
     "typescript": "^4.4.4",
-    "typescript-eslint": "^0.0.1-alpha.0"
+    "typescript-eslint": "^0.0.1-alpha.0",
+    "webpack": "^5.62.1",
+    "webpack-cli": "^4.9.1"
   }
 }
