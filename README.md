@@ -21,7 +21,7 @@ See `scripts` in `package.json`.
 ### Server
 
 ```bash
-curl --data "barcode=validationisaluxury" https://localhost:5000/api/report
+curl --data "barcode=validationisaluxury" http://localhost:5000/api/report
 ```
 
 ### Client
