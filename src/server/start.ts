@@ -19,7 +19,7 @@ app.post("/api/report", (req: Request, res: Response) => {
   res.json(Object.fromEntries(badDb)).status(200)
 })
 
-const port = process.env.PORT || 5000
-app.listen(port)
+app.use("/", express.static("dist/public"))
 
-console.log("App is listening on port " + port)
+const port = process.env.PORT || 5000
+app.listen(port, () => console.log("App is listening on port " + port))
