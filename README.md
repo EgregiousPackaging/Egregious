@@ -4,14 +4,35 @@ A webapplication to scan products and send complaints about excess packaging.
 
 ## Dev
 
-Install node/npm, then:
+Use the Node Version Manager (NVM) to install Node/NPM at the correct version:
 
 ```bash
-npm install --dev
-npm run-script lint
-npm run-script format
-npm run-script build
-npm run-script start
+nvm use
+
+# if you get an error, install the project version of node then try again
+nvm install 14.16
+```
+
+You can now generate a non-production build of the app
+
+```bash
+# build a dev build
+npm run build:dev
+
+# Start a local server
+npm run start
+```
+
+At the moment, the only difference is how the frontend code is packaged. Prod builds are minified and don't include a source map; dev builds aren't and do.
+
+### Auto rebuilds
+
+Alternatively, you can use Nodemon to keep the builds building as you make changes.
+
+HMR is a pain in the arse, so you'll have to refresh the page to load changes to the frontend right now.
+
+```bash
+npm run watch
 ```
 
 See `scripts` in `package.json`.
@@ -29,7 +50,7 @@ curl --data "barcode=validationisaluxury" http://localhost:5000/api/report
 - open page
 
 ```bash
-firefox index.html
+firefox http://localhost:5000
 ```
 
 - allow webcam
