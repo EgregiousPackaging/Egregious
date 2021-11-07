@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "@ericblade/quagga2": "^1.4.2",
+    "axios": "^0.24.0",
     "express": "^4.17.1"
   },
   "scripts": {
@@ -21,6 +22,7 @@
     "esbuild": "^0.13.12",
     "eslint": "^8.1.0",
     "eslint-config-prettier": "^8.3.0",
+    "nodemon": "^2.0.14",
     "prettier": "^2.4.1",
     "ts-loader": "^9.2.6",
     "ts-node": "^10.4.0",

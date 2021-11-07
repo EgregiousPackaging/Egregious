@@ -1,8 +1,15 @@
 import Quagga, { QuaggaJSResultObject } from "@ericblade/quagga2"
+import { submitBarcode } from "./lib/api"
+import debounce from "./utils/debounce"
 
-function processBarCode(result: QuaggaJSResultObject): void {
+const debouncedSubmit = debounce(submitBarcode, 500)
+
+async function processBarCode(result: QuaggaJSResultObject): Promise<void> {
   const barcode = result.codeResult.code
-  console.log(barcode)
+  console.log({ barcode })
+  if (barcode) {
+    return await debouncedSubmit(barcode.toString())
+  }
 }
 
 function quaggaSetup(): void {
