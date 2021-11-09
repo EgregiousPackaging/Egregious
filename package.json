@@ -8,14 +8,15 @@
     "lint": "eslint .",
     "format-check": "prettier --check .",
     "format": "prettier -w .",
+    "build": "npm run server:build && npm run client:build:prod",
+    "watch": "concurrently \"npm run client:build:watch\" \"npm run server:watch\"",
     "server:build": "tsc --build ./src/server/tsconfig.json",
+    "server:watch": "nodemon -w src/server --exec ts-node ./src/server/start.ts",
+    "server:start": "node ./dist/server/start.js",
     "client:build": "esbuild src/client/index.ts --splitting --bundle --format=esm --outdir=dist/public/scripts/",
     "client:build:dev": "npm run client:build -- --sourcemap",
     "client:build:watch": "npm run client:build:dev -- --watch",
-    "client:build:prod": "npm run client:build -- --minify",
-    "build": "npm run build-server && npm run build-client:prod",
-    "server:start": "node ./dist/server/start.js",
-    "watch": "concurrently \"npm run client:build:watch\" \"nodemon -w src/server --exec ts-node ./src/server/start.ts\""
+    "client:build:prod": "npm run client:build -- --minify"
   },
   "devDependencies": {
     "@types/express": "^4.17.13",
