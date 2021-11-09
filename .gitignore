@@ -1,2 +1,5 @@
 node_modules/*
-dist/*
+/dist/server
+
+# Compiles scripts
+/dist/public/scripts
