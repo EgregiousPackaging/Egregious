@@ -57,15 +57,43 @@ firefox http://localhost:5000
 - scan an EAN barcode (the ones on CDs)
 - should appear in console logs
 
-## TODO
+## Production
 
-- move client to react
-- have build process copy html files to `./dist`
-- serve the Frontend files from the server
-- docker/docker-compose setup to make running and test the server more reproducible
-- CI config
-  - probably github actions
-- have Frontend JS send scanned barcodes to server API
-- Have server store barcodes in a DB instead of memory
-- refactor tsconfig files
-  - move common config to a shared file they extend
+We have an VPS instance running at `51.195.149.81`.
+It runs the cheapest [OVH instance](https://www.ovhcloud.com/en-gb/vps/compare/).
+
+It was provisioned as debian with docker installed.
+Additional manual configuration:
+
+- `sudo apt install docker-compose rsync`
+- Disabled password auth for ssh
+  - In `/etc/ssh/sshd_config`:
+    ```
+    # PasswordAuthentication yes
+    AuthenticationMethods publickey
+    ```
+
+The only user is the default `debian`
+
+### SSH access
+
+Add you public key as a new line to `./scripts/public_keys` and CI will copy to the instance when you merge to `main`.
+You can then access the instance as the `debian` user.
+
+### Deployment
+
+This is done in CI with github actions using a private key stored in the repos secrets.
+See:
+
+- `.github/workflows/prod.yml`
+- `./scripts/deploy.sh`
+
+#### Testing CI
+
+You can use (act)[https://github.com/nektos/act] to check the workflows are working.
+
+```bash
+# make sure the private key doesn't need decrypting or else it'll hang when trying to access it
+# also this will do a real deploy, -n for dry run
+sudo act -s DEPLOYMENT_SSH_KEY="myprivatekey"
+```

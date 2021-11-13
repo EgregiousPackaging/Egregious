@@ -1,0 +1,2 @@
+# ssh-keyscan -t ed25519 51.195.149.81 >> ./scripts/known_hosts
+51.195.149.81 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAlQgBlyoJjdEmLkJOVutTyCTnpMAaBKLXAwQtP11q5t
