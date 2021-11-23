@@ -9,6 +9,7 @@ sudo apt-get install rsync -y
 # setup CI ssh access
 eval `ssh-agent`
 ssh-add - <<< "${DEPLOYMENT_SSH_KEY}"
+mkdir -p $HOME/.ssh
 cp ./scripts/known_hosts $HOME/.ssh/known_hosts
 # setup public keys for manual access
 rsync ./scripts/public_keys debian@51.195.149.81:/home/debian/.ssh/authorized_keys
