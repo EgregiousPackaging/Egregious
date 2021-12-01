@@ -1,4 +1,4 @@
-export default (fn: Function, timeout: number = 500) => {
+export default (fn: (...params: any) => any, timeout = 500) => {
   let timer: number
 
   return (...params: any) => {
