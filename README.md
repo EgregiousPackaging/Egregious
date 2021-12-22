@@ -20,7 +20,7 @@ You can now generate a non-production build of the app
 npm run build:dev
 
 # Start a local server
-npm run start
+npm run server:start
 ```
 
 At the moment, the only difference is how the frontend code is packaged. Prod builds are minified and don't include a source map; dev builds aren't and do.

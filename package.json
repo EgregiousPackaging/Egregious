@@ -9,6 +9,7 @@
     "format-check": "prettier --check .",
     "format": "prettier -w .",
     "build": "npm run server:build && npm run client:build:prod",
+    "build:dev": "npm run server:build && npm run client:build:dev",
     "watch": "concurrently \"npm run client:build:watch\" \"npm run server:watch\"",
     "server:build": "tsc --build ./src/server/tsconfig.json",
     "server:watch": "nodemon -w src/server --exec ts-node ./src/server/start.ts",
