@@ -1,8 +1,5 @@
 import Quagga, { QuaggaJSResultObject } from "@ericblade/quagga2"
 import { submitBarcode } from "./lib/api"
-import debounce from "./utils/debounce"
-
-const debouncedSubmit = debounce(submitBarcode, 500)
 
 function createMailToLink(address: string, barcode: string) {
   const link = document.getElementById("mail-to-link") as HTMLLinkElement
@@ -21,19 +18,26 @@ async function processBarCode(result: QuaggaJSResultObject): Promise<void> {
   const barcode = result.codeResult.code
   console.log({ barcode })
   if (barcode) {
-    await debouncedSubmit(barcode.toString())
-    const result = document.getElementById("result") as HTMLParagraphElement
-    result.textContent = `Scanned code: ${barcode.toString()}`
-    // todo:  lookup address based on manufactor
-    // https://www.mailinator.com/v4/public/inboxes.jsp?to=testrandomdog385
-    createMailToLink("testrandomdog385@mailinator.com", barcode)
-    // todo: look up account based on manufactor
-    createTwitterLink("POTUS", barcode)
-    document.getElementById("scanner")!.hidden = true
-    document.getElementById("scanned")!.hidden = false
     Quagga.offProcessed(processBarCode)
     Quagga.offDetected(processBarCode)
     Quagga.stop()
+    const response = await submitBarcode(barcode.toString())
+    const result = document.getElementById("result") as HTMLParagraphElement
+    if (response === undefined) {
+      result.textContent = `Failed to report barcode, try again`
+    } else {
+      result.textContent = `Scanned code: ${barcode.toString()}. This has been reported ${
+        response.count
+      } times.`
+      if (response.manufacturer?.email) {
+        createMailToLink(response.manufacturer?.email, barcode)
+      }
+      if (response.manufacturer?.twitterHandle) {
+        createTwitterLink(response.manufacturer?.twitterHandle, barcode)
+      }
+    }
+    document.getElementById("scanner")!.hidden = true
+    document.getElementById("scanned")!.hidden = false
   }
 }
 

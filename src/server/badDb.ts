@@ -2,24 +2,46 @@ class Manufacturer {
   count: number
   code: string
   name: string
+  twitterHandle?: string
+  email?: string
 
-  constructor(code: string, name: string) {
+  constructor(
+    code: string,
+    name: string,
+    twitterHandle?: string,
+    email?: string
+  ) {
     this.count = 0
     this.code = code
     this.name = name
+    this.twitterHandle = twitterHandle
+    this.email = email
   }
 }
 
 export const barcodes = new Map()
 
-// todo: include email addresses and twitter accounts
 export const manufacturers = [
-  new Manufacturer("5000169", "waitrose"),
-  new Manufacturer("5010044", "warburtons"),
-  new Manufacturer("5449000", "coca-cola"),
-  new Manufacturer("5410316", "dageo scotland"),
-  new Manufacturer("5031021", "tesco"),
-  new Manufacturer("9002490", "red bull"),
+  new Manufacturer("5000169", "waitrose", "waitrose"),
+  new Manufacturer("5010044", "warburtons", "Warburtons"),
+  new Manufacturer("5449000", "coca-cola", "CocaCola"),
+  new Manufacturer("5410316", "dageo scotland", "DiageoGB"),
+  // https://www.complaintsdepartment.co.uk/tesco/
+  new Manufacturer(
+    "5031021",
+    "tesco",
+    "Tesco",
+    "customer.services@tesco.co.uk"
+  ),
+  new Manufacturer("9002490", "red bull", "redbull"),
+  new Manufacturer(
+    "9999999",
+    "test",
+    // https://twitter.com/EgregiousTest
+    "egregiousTest",
+    // https://www.mailinator.com/v4/public/inboxes.jsp?to=testrandomdog385
+    "testrandomdog385@mailinator.com"
+  ),
 ]
 
 export let unknownManufacturer = 0
