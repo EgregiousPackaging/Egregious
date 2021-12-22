@@ -4,20 +4,45 @@
     <meta charset="utf-8" />
     <title>Egregious</title>
     <script src="/scripts/index.js"></script>
+    <style>
+      body {
+        text-align: center;
+        font-size: 1em;
+      }
+      button {
+        font-size: 1.5em;
+      }
+      #post-scan-actions {
+        display:flex;
+        flex-direction: column;
+      }
+    </style>
   </head>
 
   <body>
     <div id="welcome">
-      <h>Egregious Packaging</h>
-      <button id="scan">Report some egregious packaging</button>
+      <h1>Egregious Packaging</h1>
+      <p>Welcome to the site!</p>
+      <p>We make it easy to report packaging that is unnecessarily wastful or damaging to the planent.
+        Just scan the barcode of the product with your camera.</p>
+      <button id="scan">Scan</button>
     </div>
     <div id="scanner" hidden></div>
     <div id="scanned" hidden>
-      <h1>You did it</h1>
+      <h1>Thank you!</h1>
       <p id="result"></p>
-      <a id="mail-to-link">Email complaint</a>
-      <a id="twitter-link">Tweet complaint</a>
-      <button id="scan-again">Scan another</button>
+      <div id="post-scan-actions">
+        <a id="mail-to-link">Email complaint</a>
+        <a id="twitter-link">Tweet complaint</a>
+        <button id="scan-again">Scan another</button>
+      </div>
+      <h2>Other Complaints</h2>
+      <!--todo: how to show emails-->
+      <!-- code from
+        https://help.twitter.com/en/using-twitter/embed-twitter-feed
+        https://publish.twitter.com/?query=https%3A%2F%2Ftwitter.com%2FEgregiousTest&widget=Timeline
+      -->
+      <a class="twitter-timeline" href="https://twitter.com/EgregiousTest?ref_src=twsrc%5Etfw">Tweets by EgregiousTest</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
     </div>
   </body>
 </html>
