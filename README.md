@@ -25,6 +25,18 @@ npm run server:start
 
 At the moment, the only difference is how the frontend code is packaged. Prod builds are minified and don't include a source map; dev builds aren't and do.
 
+### Dev on mobile
+
+Follow: https://developer.mozilla.org/en-US/docs/Tools/about:debugging
+
+`getUserMedia` will fail without HTTPS, meaning no camera access.
+
+To solve that use the `docker-compose.dev.yml` config to setup an nginx proxy that uses self signed certs.
+
+```bash
+sudo docker-compose -f ./docker-compose.yml -f ./docker-compose.dev.yml up --build
+```
+
 ### Auto rebuilds
 
 Alternatively, you can use Nodemon to keep the builds building as you make changes.

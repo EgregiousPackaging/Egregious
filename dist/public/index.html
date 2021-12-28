@@ -2,19 +2,26 @@
 <html>
   <head>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Egregious</title>
     <script src="/scripts/index.js"></script>
     <style>
       body {
         text-align: center;
-        font-size: 1em;
+        font-size: 1.5em;
+      }
+      p {
+        padding-left: 5%;
+        padding-right: 5%;
       }
       button {
-        font-size: 1.5em;
+        font-size: 2em;
       }
       #post-scan-actions {
         display:flex;
         flex-direction: column;
+        padding-left: 5%;
+        padding-right: 5%;
       }
     </style>
   </head>
@@ -23,8 +30,8 @@
     <div id="welcome">
       <h1>Egregious Packaging</h1>
       <p>Welcome to the site!</p>
-      <p>We make it easy to report packaging that is unnecessarily wastful or damaging to the planent.
-        Just scan the barcode of the product with your camera.</p>
+      <p>We make it easy to report packaging that is unnecessarily wasteful or damaging to the planet.</p>
+      <p>Just scan the barcode of a product with your camera.</p>
       <button id="scan">Scan</button>
     </div>
     <div id="scanner" hidden></div>

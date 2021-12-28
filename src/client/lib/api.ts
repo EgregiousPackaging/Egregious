@@ -4,7 +4,7 @@ const API_BASE = "/api"
 
 type reportResponse = {
   count: number
-  manufacturer: Manufacturer
+  manufacturer?: Manufacturer
 }
 
 // todo: share with backend
