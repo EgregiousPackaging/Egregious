@@ -29,11 +29,21 @@ async function processBarCode(result: QuaggaJSResultObject): Promise<void> {
       result.textContent = `Scanned code: ${barcode.toString()}. This has been reported ${
         response.count
       } times.`
-      if (response.manufacturer?.email) {
-        createMailToLink(response.manufacturer?.email, barcode)
-      }
-      if (response.manufacturer?.twitterHandle) {
-        createTwitterLink(response.manufacturer?.twitterHandle, barcode)
+      if (response.manufacturer === undefined) {
+        result.textContent += `No manufacturer information found.`
+      } else {
+        if (response.manufacturer.email !== undefined) {
+          createMailToLink(response.manufacturer?.email, barcode)
+          document.getElementById("mail-to-link")!.hidden = false
+        } else {
+          document.getElementById("mail-to-link")!.hidden = true
+        }
+        if (response.manufacturer.twitterHandle !== undefined) {
+          createTwitterLink(response.manufacturer?.twitterHandle, barcode)
+          document.getElementById("twitter-link")!.hidden = false
+        } else {
+          document.getElementById("twitter-link")!.hidden = true
+        }
       }
     }
     document.getElementById("scanner")!.hidden = true
