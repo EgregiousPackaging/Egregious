@@ -54,7 +54,19 @@ See `scripts` in `package.json`.
 ### Server
 
 ```bash
-curl --data "barcode=validationisaluxury" http://localhost:5000/api/report
+# uses a bind-mount so the test setup can access the sqlite db file
+# but because the app runs as a non-root user in the container
+# the bind-mount folder needs to have the same uid as the user in the container
+# this is more complicated if:
+# 1) you're not running linux
+# 2) Your host user does not have a user ID of 1000 (which is what user node has in the container)
+# https://stackoverflow.com/a/29251160
+mkdir egregiousdb
+chown egregiousdb $USER
+# rebuild app code, will be mapped to container by a bind-mount
+npm run-script build
+sudo docker-compose -f ./docker-compose.yml -f ./docker-compose.dev.yml up
+sudo npm run-script test
 ```
 
 ### Client
@@ -91,6 +103,30 @@ The only user is the default `debian`
 
 Add you public key as a new line to `./scripts/public_keys` and CI will copy to the instance when you merge to `main`.
 You can then access the instance as the `debian` user.
+
+### DB
+
+We use sqllite with a volume mapped to persist it.
+
+```bash
+docker volume create egregiousdb
+```
+
+Back up and restore are based on Based on [docker documentation](https://docs.docker.com/storage/volumes/#backup-restore-or-migrate-data-volumes)
+
+#### Backup
+
+```
+./scripts/backup.sh
+```
+
+#### Restore:
+
+copy the backup file the remote host and then:
+
+```bash
+sudo docker run --rm -v egregiousdb:/egregiousdb -v $(pwd):/backup ubuntu bash -c "cd /egregiousdb && tar -xzf /backup/backup.tar --strip 1"
+```
 
 ### Deployment
 

@@ -18,6 +18,11 @@ COPY package*.json ./
 RUN apk add --no-cache curl && \
   npm ci --only=prod --no-optional
 
+# https://github.com/moby/moby/issues/2259#issuecomment-916982087
+RUN mkdir /mnt/egregiousdb
+RUN chown node /mnt/egregiousdb
+VOLUME /mnt/egregiousdb
+
 USER node
 
 HEALTHCHECK --interval=3m --timeout=5s --retries=3 CMD [ "curl", "--fail", "http://localhost:5000/healthcheck" ]

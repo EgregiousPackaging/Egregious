@@ -1,65 +1,74 @@
 import express, { Request, Response } from "express"
-import {
-  barcodes,
-  fakeData,
-  insert,
-  manufacturerMappings,
-  manufacturers,
-  unknownManufacturer,
-} from "./badDb"
+import asyncHandler from "express-async-handler"
 
+import { manufacturerMappings, Database, getManufacturer } from "./lessBadDb"
 import routeHealthcheck from "./routes/healthcheck"
 
 const app = express()
 
+const database = new Database()
+
 app.use(express.urlencoded({ extended: true }))
 
-app.post("/api/report", (req: Request, res: Response) => {
-  if (req.body.barcode === undefined) {
-    res.status(400)
-  }
+app.post(
+  "/api/report",
+  asyncHandler(async (req: Request, res: Response) => {
+    if (req.body.barcode === undefined) {
+      res.status(400).send("missing barcode")
+    }
 
-  if (typeof req.body.barcode === "string") {
-    const barcode = req.body.barcode
+    if (typeof req.body.barcode === "string") {
+      const barcode = req.body.barcode
+      const result = await database.insert(barcode)
+      res.json(result).status(200)
+    } else {
+      res.status(400)
+    }
+  })
+)
 
-    const result = insert(barcode)
-    res.json(result).status(200)
-  } else {
-    res.status(400)
-  }
-})
+app.get(
+  "/api/barcodes/:barcode",
+  asyncHandler(async (req: Request, res: Response) => {
+    const count = await database.getBarcodeCount(req.params.barcode)
+    const manufacturer = getManufacturer(req.params.barcode)
+    if (manufacturer === undefined) {
+      res
+        .json({
+          count,
+          barcode: req.params.barcode,
+        })
+        .status(200)
+    } else {
+      const manufacturerCount = await database.getManufacturerCount(
+        manufacturer.code
+      )
+      res
+        .json({
+          count,
+          barcode: req.params.barcode,
+          manufacturer: {
+            ...manufacturer,
+            count: manufacturerCount,
+          },
+        })
+        .status(200)
+    }
+  })
+)
 
-app.get("/api/barcodes", (req: Request, res: Response) => {
-  return res.json(Object.fromEntries(barcodes)).status(200)
-})
-
-app.get("/api/barcodes/:barcode", (req: Request, res: Response) => {
-  const count = barcodes.get(req.params.barcode)
-  if (count) {
-    return res.json({ barcode: req.params.barcode, count }).status(200)
-  } else {
-    res.status(400)
-  }
-})
-
-app.get("/api/manufacturers", (req: Request, res: Response) => {
-  return res
-    .json({
-      manufacturers,
-      unknownManufacturer,
-    })
-    .status(200)
-})
-
-app.get("/api/manufacturers/:id", (req: Request, res: Response) => {
-  const manufacturer = manufacturerMappings.get(req.params.id)
-
-  if (manufacturer) {
-    return res.json(manufacturer).status(200)
-  } else {
-    res.status(400)
-  }
-})
+app.get(
+  "/api/manufacturers/:code",
+  asyncHandler(async (req: Request, res: Response) => {
+    const manufacturer = manufacturerMappings.get(req.params.code)
+    const count = await database.getManufacturerCount(req.params.code)
+    if (manufacturer) {
+      res.json({ ...manufacturer, count }).status(200)
+    } else {
+      res.status(404)
+    }
+  })
+)
 
 // @TODO: There's funky things we can do to gracefully drain connections, but that's way out of
 // scope for now.
@@ -76,6 +85,5 @@ process.on("SIGTERM", () => {
 app.use("/", express.static("dist/public"))
 app.use("/healthcheck", routeHealthcheck)
 
-fakeData()
 const port = process.env.PORT || 5000
 app.listen(port, () => console.log("App is listening on port " + port))

@@ -1,5 +1,9 @@
 node_modules/*
 /dist/server
+/backups/*
 
 # Compiles scripts
 /dist/public/scripts
+
+# volume for db when testing
+/egregiousdb
