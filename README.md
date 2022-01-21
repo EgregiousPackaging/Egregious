@@ -62,7 +62,7 @@ See `scripts` in `package.json`.
 # 2) Your host user does not have a user ID of 1000 (which is what user node has in the container)
 # https://stackoverflow.com/a/29251160
 mkdir egregiousdb
-chown egregiousdb $USER
+chown $USER egregiousdb
 # rebuild app code, will be mapped to container by a bind-mount
 npm run-script build
 sudo docker-compose -f ./docker-compose.yml -f ./docker-compose.dev.yml up
