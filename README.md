@@ -37,6 +37,8 @@ To solve that use the `docker-compose.dev.yml` config to setup an nginx proxy th
 sudo docker-compose -f ./docker-compose.yml -f ./docker-compose.dev.yml up --build
 ```
 
+Connect to port 5001 via local network with HTTPS. It only listens for HTTP on localhost on 5000.
+
 ### Auto rebuilds
 
 Alternatively, you can use Nodemon to keep the builds building as you make changes.
