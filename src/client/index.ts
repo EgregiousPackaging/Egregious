@@ -31,6 +31,8 @@ async function processBarCode(result: QuaggaJSResultObject): Promise<void> {
       } times.`
       if (response.manufacturer === undefined) {
         result.textContent += `No manufacturer information found.`
+        document.getElementById("mail-to-link")!.hidden = true
+        document.getElementById("twitter-link")!.hidden = true
       } else {
         if (response.manufacturer.email !== undefined) {
           createMailToLink(response.manufacturer?.email, barcode)
